@@ -37,11 +37,36 @@ int main(int argc, char **argv)
 
 	sta = calloc_double_array(5);
 
-	RP.Test_Problem_Toro_1();
-	RP.Test_Problem_Toro_5();
+	//RP.Test_Problem_Toro_1();
+	//RP.Test_Problem_Toro_5();
 
 
-	RP.riemann(0,stl,str,sta);
+	//RP.riemann(0,stl,str,sta);
+
+	//printf("sta %f %f %f %f %f\n",sta[0],sta[1],sta[2],sta[3],sta[4]);
+
+
+
+	FILE *fp;
+	fp = fopen("toro_problem_1.txt","w");
+	double t_final = 0.25;
+	double s_min =  -2.0;
+	double s_max =   2.0;
+	double s;
+
+	int i;
+	int n_sample = 1000;
+
+	for(i=0;i<n_sample;i++)
+	{
+		s = (s_max-s_min)*((double) i)/((double) (n_sample-1)) + s_min;
+
+		RP.riemann(s,stl,str,sta);
+
+		fprintf(fp,"%e\t%e\t%e\t%e\n",s*t_final+0.5,sta[0],sta[1],sta[2]);
+	}
+	fclose(fp);
+
 
 	free(sta);
 

@@ -10,7 +10,7 @@
 #include "constants.h"
 #include "auxiliary.h"*/
 
-#define DEBUG_TORO_RIEMANN
+//#define DEBUG_TORO_RIEMANN
 int RiemannProblem::riemann( double s, double stl[5], double str[5], double sta[5])
 {
 
@@ -493,6 +493,9 @@ void RiemannProblem::sample_riemann(double s, double pm, double um, double *rho_
 
 	//done!
 }
+
+
+
 void RiemannProblem::Test_Problem_Toro_1(void)
 {
 	//problem 1
@@ -553,6 +556,25 @@ void RiemannProblem::Test_Problem_Toro_1(void)
 	printf("p_*   % f\tu_* % f\trho_L* % f\n",p_s,u_s,rho_s);
 	printf("********************************************\n");
 
+
+	FILE *fp;
+	fp = fopen("toro_problem_1.txt","w");
+	double t_final = 0.25;
+	double s_min =  -0.125;
+	double s_max =   0.125;
+
+	int i;
+	int n_sample = 1000;
+
+	for(i=0;i<n_sample;i++)
+	{
+		s = (s_max-s_min)*((double) i)/((double) (n_sample-1)) + s_min;
+
+		sample_riemann(s,sta[2],sta[1],&rho_s,&u_s,&p_s);
+
+		fprintf(fp,"%e\t%e\t%e\t%e\n",(s/t_final)+0.5,rho_s,u_s,p_s);
+	}
+	fclose(fp);
 
 
 	free(stl);
